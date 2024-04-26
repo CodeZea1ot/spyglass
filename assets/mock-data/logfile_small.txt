@@ -1,0 +1,10 @@
+2024-04-25 10:00:01 [ARRR] Matey hoisted the Jolly Roger: username1
+2024-04-25 10:02:15 [AVAST] Lost sight o' the horizon: Connection timed out
+2024-04-25 10:05:30 [YARR] Sailing through treacherous waters: /api/data?id=123
+2024-04-25 10:10:45 [ARRR] Hoisted the anchor: Successfully updated the booty map
+2024-04-25 10:15:00 [BATTEN DOWN THE HATCHES] The scallywags be runnin' out o' rum!
+2024-04-25 10:20:10 [AVAST] Ship be takin' on water: Database connection failed
+2024-04-25 10:25:25 [YARR] Lowered the sails: Executin' script: cleanup.sh
+2024-04-25 10:30:40 [ARRR] New buccaneer aboard: username2
+2024-04-25 10:35:55 [AVAST] Ship be headin' fer Davy Jones' locker: Server crashed
+2024-04-25 10:40:00 [BATTEN DOWN THE HATCHES] The powder be kegged!

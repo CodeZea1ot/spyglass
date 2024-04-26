@@ -2,20 +2,21 @@
 
 ########## DEFAULTS ##########
 
-# Default value for max number of lines to display or group
-max_lines=8
-
-# Default value for delay between lines
+# -d | Default value for delay between lines
 line_delay=0.1
 
-# Default value for delay between groups
+# -D | Default value for delay between groups
 group_delay=0
 
-# Default value for spacing
-spacing=0
+# -k, -K | Default behavior regarding keeping terminal output if -k or -K not used
+keep_final_group=false
+keep_previous_group=false
 
-# Default behavior to clear the output if -k flag is not used
-clear_output=true
+# -n | Default value for max number of lines to display or group
+max_lines=8
+
+# -s | Default value for spacing
+spacing=0
 
 ########## END DEFAULTS ##########
 
@@ -40,12 +41,13 @@ clear_previous_lines() {
 }
 
 usage() {
-	echo "Usage: spyglass [-d] [-D] [-h] [-k] [-n] [-s] <file>"
+	echo "Usage: spyglass [-d] [-D] [-h] [-k] [-K] [-n] [-s] <file>"
 	echo "Options:"
 	echo "	-d <line_delay>			Set the delay in seconds between each line output (default is ${line_delay})"
 	echo "	-D <group_delay>		Set the delay in seconds between each group of -n lines output (default is ${group_delay})"
 	echo "	-h <help>			Displays this usage menu"
-	echo "	-k <keep>			Keep the last group of output drawn to the terminal (default is to clear)"
+	echo "	-k <keep-final-group>			Keep the final group of output drawn to the terminal (default is to clear)"
+	echo "	-K <keep-all-groups>			Keep all output groups drawn to the terminal (default is to clear)"
 	echo "	-n <lines>			Specify the maximum number of lines to display as a group (default is ${max_lines})"
 	echo "	-s <spacing>			Set the amount of line breaks that should appear after each line (default is ${spacing})"
 	exit 1
@@ -61,7 +63,7 @@ if [[ $# -eq 0 ]]; then
 fi
 
 # Parse command line options
-while getopts ":d:D:hkn:s:" opt; do
+while getopts ":d:D:hkKn:s:" opt; do
 	case $opt in
 	d)
 		line_delay=$OPTARG
@@ -74,7 +76,11 @@ while getopts ":d:D:hkn:s:" opt; do
 		exit 0
 		;;
 	k)
-		clear_output=false
+		keep_final_group=true
+		;;
+	K)
+		keep_final_group=true
+		keep_previous_group=true
 		;;
 	n)
 		max_lines=$OPTARG
@@ -111,7 +117,9 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 	# If it is, clear the lines that have been drawn to the terminal
 	if [[ $line_count -gt $max_lines ]]; then
 		apply_group_delay
-		clear_previous_lines $max_lines
+		if ! $keep_previous_group; then
+			clear_previous_lines $max_lines
+		fi
 		line_count=1
 	fi
 
@@ -126,13 +134,14 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 	fi
 
 	apply_line_delay
+
 done <"$1"
 
 # Ensure group delay is applied to final group
 apply_group_delay
 
 # Clear remaining lines after reading the file if -k option is not provided
-if $clear_output; then
+if ! $keep_final_group; then
 	clear_previous_lines $line_count
 fi
 

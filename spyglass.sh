@@ -1,5 +1,13 @@
 #!/bin/bash
 
+########## META ##########
+#
+# Version: 0.1.0
+#
+# Author: Tyler W. Phass | https://tylerphass.com | https://codezealot.com | https:tomeofzeal.com | https://twitter.com/CodeZealotTuts
+#
+########## END META ##########
+
 ########## DEFAULTS ##########
 
 # -d | Default value for delay between lines

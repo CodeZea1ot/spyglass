@@ -1,0 +1,6 @@
+This be yer terminal history above...
+
+Let's use our trusty spyglass to keep it safe!
+
+Treacherous terminal output incoming from stdin!
+

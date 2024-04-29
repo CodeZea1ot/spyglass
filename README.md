@@ -10,25 +10,26 @@ A tool for navigating the treacherous seas of terminal output.
 
 ## Installation
 
-> [!NOTE]  
-> Releases will be avaliable in the near future.
+### Downloading a Release
 
-The easiest way to install is to create a symbolic link that is available within your in your `$PATH`. I recommend `/usr/local/bin`.
+Simply head over to [Releases](https://github.com/CodeZea1ot/spyglass/releases), download the `spyglass.sh` asset for your desired version, and then put it in your `$PATH`. I recommend `/usr/local/bin`.
 
-This allows you to simply `git pull` this repo whenever you want the latest version from the `main` branch.
+```bash
+sudo cp /path/to/spyglass.sh /usr/local/bin/spyglass
+```
+
+### Cloning the Repo
+
+You can also install `spyglass` by cloning this repo and then creating a symbolic link that is available within your `$PATH`.
+
+This installation method allows you to simply `git pull` this repo whenever you want the latest version from the `main` branch.
+
+It also allows you to swap the version of `spyglass` you are using by changing git branches, which is useful for exploring features currently in development but not yet in a release.
 
 ```bash
 git clone git@github.com:CodeZea1ot/spyglass.git
 cd spyglass
 sudo ln -s $(pwd)/spyglass.sh /usr/local/bin/spyglass
-```
-
-Alternatively, if you don't want to use `git pull` to update, you can just copy the binary script into your `$PATH`. Again, `/usr/local/bin` is probably the best choice.
-
-```bash
-git clone git@github.com:CodeZea1ot/spyglass.git
-cd spyglass
-sudo cp $(pwd)/spyglass.sh /usr/local/bin/spyglass
 ```
 
 ## Uninstall
@@ -39,6 +40,7 @@ sudo rm /usr/local/bin/spyglass
 ```
 
 ## Options
+- [`-c`](#smart-color-formatting): Enable smart color formatting (default is disabled)
 - [`-d`](#line-delay): Set the delay in seconds between each line output (default is 0.1)
 - [`-D`](#group-delay): Set the delay in seconds between each group of -n lines output (default is 0)
 - [`-k`](#keep-last-group): Keep the last group of output drawn to the terminal (default is to clear)
@@ -47,6 +49,36 @@ sudo rm /usr/local/bin/spyglass
 - [`-s`](#line-spacing): Set the amount of line breaks that should appear after each line (default is 0)
 
 ## Configuration
+
+### Smart Color Formatting
+
+The `-c` flag enables smart color formatting for each line being drawn to the terminal. If a keyword is detected anywhere in the line, the corresponding color will be applied.
+
+If multiple keywords exist in the line being formatted, the match with the highest priority value will be applied.
+
+If no keywords are found, a color will not be applied to the line.
+
+| Keyword        | Color    | Description               | Priority    |
+|----------------|----------|---------------------------|-------------|
+| error          | Red      | Error message             |      3      |
+| warn           | Yellow   | Warning message           |      2      |
+| success        | Green    | Success message           |      1      |
+| successfully   | Green    | Success message           |      1      |
+| finished       | Green    | Completion message        |      1      |
+| complete       | Green    | Completion message        |      1      |
+| completed      | Green    | Completion message        |      1      |
+| done           | Green    | Completion message        |      1      |
+| info           | Blue     | Informational message     |      0      |
+| downloading    | Blue     | Download status message   |      0      |
+
+
+
+<details>
+<summary>Show Example</summary>
+<br>
+
+![Smart Color Formatting Example](./assets/vhs/gifs/smart_color_formatting.gif)
+</details>
 
 ### Line Delay
 

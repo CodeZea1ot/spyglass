@@ -2,13 +2,16 @@
 
 ########## META ##########
 #
-# Version: 0.1.0
+# Version: 0.2.0
 #
 # Author: Tyler W. Phass | https://tylerphass.com | https://codezealot.com | https:tomeofzeal.com | https://twitter.com/CodeZealotTuts
 #
 ########## END META ##########
 
 ########## DEFAULTS ##########
+
+# -c | Enable smart color formatting for lines (default is disabled)
+colorful_output=false
 
 # -d | Default value for delay between lines
 line_delay=0.1
@@ -67,7 +70,27 @@ run() {
 	fi
 
 	# Output line
-	echo "$line"
+	if $colorful_output; then
+		color_info='\e[1;34m'
+		color_warn='\e[1;33m'
+		color_error='\e[1;31m'
+		color_success='\e[1;32m'
+		color_reset='\e[0m'
+
+		if grep -qEi "error" <<<"$line"; then
+			printf "%b%s%b\n" "$color_error" "$line" "$color_reset"
+		elif grep -qEi "warn" <<<"$line"; then
+			printf "%b%s%b\n" "$color_warn" "$line" "$color_reset"
+		elif grep -qEi "success|successfully|finished|complete|completed|done" <<<"$line"; then
+			printf "%b%s%b\n" "$color_success" "$line" "$color_reset"
+		elif grep -qEi "info|downloading" <<<"$line"; then
+			printf "%b%s%b\n" "$color_info" "$line" "$color_reset"
+		else
+			printf "%s\n" "$line"
+		fi
+	else
+		echo "$line"
+	fi
 
 	# Output additional spaces if present
 	if [[ ! ${spacing} -eq 0 ]]; then
@@ -84,8 +107,9 @@ usage() {
 	echo "	Read from stdin: <command-to-read-from> | spyglass [options]"
 	echo "	Read from file: spyglass [options] <file>"
 	echo -e "\nOptions:\n"
-	echo "	-d <line_delay>			Set the delay in seconds between each line output (default is ${line_delay})"
-	echo "	-D <group_delay>		Set the delay in seconds between each group of -n lines output (default is ${group_delay})"
+	echo "	-c <smart-color-formatting>	Enable smart color formatting for lines (default is disabled)"
+	echo "	-d <line-delay>			Set the delay in seconds between each line output (default is ${line_delay})"
+	echo "	-D <group-delay>		Set the delay in seconds between each group of -n lines output (default is ${group_delay})"
 	echo "	-h <help>			Displays this usage menu"
 	echo "	-k <keep-final-group>		Keep the final group of output drawn to the terminal (default is to clear)"
 	echo "	-K <keep-all-groups>		Keep all output groups drawn to the terminal (default is to clear)"
@@ -99,8 +123,11 @@ usage() {
 ########## MAIN ##########
 
 # Parse command line options
-while getopts ":d:D:hkKn:s:" opt; do
+while getopts "cd:D:hkKn:s:" opt; do
 	case $opt in
+	c)
+		colorful_output=true
+		;;
 	d)
 		line_delay=$OPTARG
 		;;

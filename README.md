@@ -39,6 +39,7 @@ sudo rm /usr/local/bin/spyglass
 ```
 
 ## Options
+- [`-c`](#smart-color-formatting): Enable smart color formatting (default is disabled)
 - [`-d`](#line-delay): Set the delay in seconds between each line output (default is 0.1)
 - [`-D`](#group-delay): Set the delay in seconds between each group of -n lines output (default is 0)
 - [`-k`](#keep-last-group): Keep the last group of output drawn to the terminal (default is to clear)
@@ -47,6 +48,36 @@ sudo rm /usr/local/bin/spyglass
 - [`-s`](#line-spacing): Set the amount of line breaks that should appear after each line (default is 0)
 
 ## Configuration
+
+### Smart Color Formatting
+
+The `-c` flag enables smart color formatting for each line being drawn to the terminal. If a keyword is detected anywhere in the line, the corresponding color will be applied.
+
+If multiple keywords exist in the line being formatted, the match with the highest priority value will be applied.
+
+If no keywords are found, a color will not be applied to the line.
+
+| Keyword        | Color    | Description               | Priority    |
+|----------------|----------|---------------------------|-------------|
+| error          | Red      | Error message             |      3      |
+| warn           | Yellow   | Warning message           |      2      |
+| success        | Green    | Success message           |      1      |
+| successfully   | Green    | Success message           |      1      |
+| finished       | Green    | Completion message        |      1      |
+| complete       | Green    | Completion message        |      1      |
+| completed      | Green    | Completion message        |      1      |
+| done           | Green    | Completion message        |      1      |
+| info           | Blue     | Informational message     |      0      |
+| downloading    | Blue     | Download status message   |      0      |
+
+
+
+<details>
+<summary>Show Example</summary>
+<br>
+
+![Smart Color Formatting Example](./assets/vhs/gifs/smart-color-formatting.gif)
+</details>
 
 ### Line Delay
 
